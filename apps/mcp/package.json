@@ -1,0 +1,27 @@
+{
+	"name": "mcp",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "wrangler dev --port 8788",
+		"test": "vitest run",
+		"typecheck": "tsc --noEmit"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@modelcontextprotocol/server": "2.3.1",
+		"agents": "0.32.0",
+		"zod": "^4.2.0"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20240512.0",
+		"typescript": "^5.4.0",
+		"vitest": "^1.6.0",
+		"wrangler": "^3.0.0"
+	}
+}
