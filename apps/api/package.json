@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "wrangler dev",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "skills:build": "tsx ../../scripts/build-skills.ts",
+    "predev": "pnpm skills:build",
+    "pretest": "pnpm skills:build",
+    "pretypecheck": "pnpm skills:build"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.92",
@@ -15,6 +19,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240512.0",
+    "tsx": "^4.0.0",
     "typescript": "^5.4.0",
     "vitest": "^1.6.0",
     "wrangler": "^3.0.0"
