@@ -1,6 +1,9 @@
 import { Hono } from "hono";
+import { generateText } from "ai";
+import { getModel } from "./llm.js";
+import { parseEnv, type Env } from "./env.js";
 
-const app = new Hono();
+const app = new Hono<{ Bindings: Env }>();
 
 app.get("/api/health", (c) => c.json({ status: "ok" }));
 
