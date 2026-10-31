@@ -7,71 +7,73 @@ import { runHrSpecialist } from './agents/hr.js';
 import { TraceCollector } from './trace.js';
 import { USERS } from './users.js';
 import { parseMcpConfig } from './mcp-tools.js';
+import { runOrchestrator } from './orchestrator/orchestrator.js';
+import {
+	createSessionState,
+	InMemorySessionStore,
+} from './orchestrator/session.js';
 
 const app = new Hono<{ Bindings: Env }>();
 
 app.get('/api/health', (c) => c.json({ status: 'ok' }));
 
-// TEMPORARY: debug route for IT specialist. Will be removed.
-app.post('/api/debug/it', async (c) => {
-	try {
-		const env = parseEnv(c.env);
-		const bodySchema = z.object({
-			userId: z.enum(['ana', 'marko']),
-			task: z.string().min(1).max(500),
-		});
-		const body = await c.req.json();
-		const parsed = bodySchema.safeParse(await c.req.json().catch(() => null));
-		if (!parsed.success) return c.json({ error: 'invalid_request' }, 400);
-		const user = USERS[parsed.data.userId];
-		const model = getModel(env);
-		const trace = new TraceCollector(crypto.randomUUID());
-		const result = await runItSpecialist({
-			user,
-			model,
-			task: parsed.data.task,
-			history: [],
-			trace,
-		});
-		return c.json({ result, trace: trace.getEvents() });
-	} catch (err) {
-		console.error(err);
-		return c.json({ error: 'internal_error' }, 502);
-	}
+
+// Not durable across Worker isolates; to be replaced by a Durable Object store.
+const sessions = new InMemorySessionStore();
+
+const demoUserSchema = z.enum(['ana', 'marko']);
+const chatBodySchema = z.object({
+	sessionId: z.string().uuid(),
+	message: z.string().min(1).max(2000),
 });
 
-// TEMPORARY: debug route for the HR specialist. Will be removed.
-app.post('/api/debug/hr', async (c) => {
-	const parsed = z
-		.object({
-			userId: z.enum(['ana', 'marko']),
-			task: z.string().min(1).max(500),
-		})
-		.safeParse(await c.req.json().catch(() => null));
-	if (!parsed.success) return c.json({ error: 'invalid_request' }, 400);
+app.get('/api/users', (c) =>
+	c.json(
+		Object.values(USERS).map(({ userId, name, role }) => ({
+			userId,
+			name,
+			role,
+		})),
+	),
+);
+
+app.post('/api/chat', async (c) => {
+	// Identity comes only from this header (demo switcher), never from the body or the model.
+	const userId = demoUserSchema.safeParse(c.req.header('X-Demo-User'));
+	const body = chatBodySchema.safeParse(await c.req.json().catch(() => null));
+	if (!userId.success || !body.success)
+		return c.json({ error: 'invalid_request' }, 400);
+
+	const trace = new TraceCollector(crypto.randomUUID());
+	const key = `${userId.data}:${body.data.sessionId}`;
 
 	try {
 		const env = parseEnv(c.env);
 		const mcp = parseMcpConfig(c.env);
-		const trace = new TraceCollector(crypto.randomUUID());
-		const result = await runHrSpecialist({
+		const session = (await sessions.get(key)) ?? createSessionState();
+
+		const result = await runOrchestrator({
 			model: getModel(env),
-			user: USERS[parsed.data.userId],
+			user: USERS[userId.data],
 			trace,
-			task: parsed.data.task,
-			history: [],
+			session,
+			message: body.data.message,
 			mcp,
 		});
-		return c.json({
-			result: result.ok ? { ok: true, text: result.text } : result,
-			trace: trace.getEvents(),
-		});
+		await sessions.set(key, session);
+
+		if (result.ok)
+			return c.json({ text: result.text, trace: trace.getEvents() });
+		// Fixed error codes only; never raw errors or stack traces.
+		return result.error === 'timeout'
+			? c.json({ error: 'timeout', trace: trace.getEvents() }, 504)
+			: c.json({ error: 'assistant_failed', trace: trace.getEvents() }, 502);
 	} catch (err) {
 		console.error(
-			'debug/hr failed:',
+			'chat failed:',
 			err instanceof Error ? err.message : 'unknown error',
 		);
-		return c.json({ error: 'internal_error' }, 502);
+		return c.json({ error: 'internal_error', trace: trace.getEvents() }, 500);
 	}
 });
 
