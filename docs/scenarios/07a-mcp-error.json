@@ -1,0 +1,84 @@
+{
+	"text": "I wasn't able to find your vacation entitlement. The HR policy lookup service returned an error, and the HR specialist can't look up individual balances. Your balance would need to come from the HR system or HR administration. You can contact them directly, or ask me again later and I'll retry the lookup.",
+	"trace": [
+		{
+			"type": "permission_decision",
+			"agent": "orchestrator",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "delegateToIt",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:02:56.481Z",
+			"requestId": "01bbe894-cead-4e92-a0d7-e8ceda346a78"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "orchestrator",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "delegateToHr",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:02:56.481Z",
+			"requestId": "01bbe894-cead-4e92-a0d7-e8ceda346a78"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "delegation_started",
+			"to": "hr",
+			"task": "Look up the vacation entitlement for Ana Petrovic (account username ana.petrovic). Report her total annual vacation days and how many she has remaining or used so far this year, if available.",
+			"ts": "2026-10-31T19:02:57.584Z",
+			"requestId": "01bbe894-cead-4e92-a0d7-e8ceda346a78"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "hr",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "searchHrPolicy",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:02:57.596Z",
+			"requestId": "01bbe894-cead-4e92-a0d7-e8ceda346a78"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "hr",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "getEquipmentProfile",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:02:57.596Z",
+			"requestId": "01bbe894-cead-4e92-a0d7-e8ceda346a78"
+		},
+		{
+			"agent": "hr",
+			"type": "tool_call",
+			"tool": "search_hr_policies",
+			"outcome": "error",
+			"durationMs": 13,
+			"ts": "2026-10-31T19:02:59.295Z",
+			"requestId": "01bbe894-cead-4e92-a0d7-e8ceda346a78"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "delegation_completed",
+			"to": "hr",
+			"durationMs": 2919,
+			"outcome": "error",
+			"ts": "2026-10-31T19:03:00.503Z",
+			"requestId": "01bbe894-cead-4e92-a0d7-e8ceda346a78"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "tool_call",
+			"tool": "delegateToHr",
+			"outcome": "ok",
+			"durationMs": 2919,
+			"ts": "2026-10-31T19:03:00.503Z",
+			"requestId": "01bbe894-cead-4e92-a0d7-e8ceda346a78"
+		}
+	]
+}

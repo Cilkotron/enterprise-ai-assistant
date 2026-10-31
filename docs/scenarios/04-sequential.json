@@ -1,0 +1,177 @@
+{
+	"text": "Your standard equipment for the designer role is a **MacBook Pro 16**, a **Figma** license, an **Adobe Creative Cloud** license, and an **external 4K monitor**.\n\n**Setup, in order:**\n1. **First login:** Sign in with your account, ana.petrovic, and set a new password. Confirm full-disk encryption is on before you store any company files.\n2. **VPN:** Install the company VPN profile. VPN is currently running slowly from the Belgrade gateway, so connections may be slow on Monday. Check the status again before you start.\n3. **Email:** Add the company mailbox to your mail app. Email is working normally.\n4. **Figma:** Install it and sign in with your company account.\n5. **Adobe Creative Cloud:** Install it and sign in with your company account.\n6. **External 4K monitor:** Connect it to the laptop with USB-C, Thunderbolt, or an adapter, depending on the monitor's inputs. Then go to System Settings > Displays to set 4K resolution and the layout.\n\n**Before Monday:** Account activation, the VPN profile, and the Figma and Adobe licenses can't be completed remotely from here. The IT team needs to assign them. I can't confirm whether they're already done, so check with IT before Monday if you want to be sure. The monitor can only be set up physically.",
+	"trace": [
+		{
+			"type": "permission_decision",
+			"agent": "orchestrator",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "delegateToIt",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:00:49.514Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "orchestrator",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "delegateToHr",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:00:49.514Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "delegation_started",
+			"to": "hr",
+			"task": "A new employee, Ana Petrovic (account username ana.petrovic), is starting Monday in a designer role. Please look up the standard equipment profile for this role: the laptop model and the software licenses included. Report the laptop model and the full list of software provided for this profile.",
+			"ts": "2026-10-31T19:00:51.063Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "hr",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "searchHrPolicy",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:00:51.087Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "hr",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "getEquipmentProfile",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:00:51.087Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"agent": "hr",
+			"type": "tool_call",
+			"tool": "get_equipment_profile",
+			"outcome": "ok",
+			"durationMs": 13,
+			"ts": "2026-10-31T19:00:51.974Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "delegation_completed",
+			"to": "hr",
+			"durationMs": 1848,
+			"outcome": "ok",
+			"ts": "2026-10-31T19:00:52.911Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "tool_call",
+			"tool": "delegateToHr",
+			"outcome": "ok",
+			"durationMs": 1848,
+			"ts": "2026-10-31T19:00:52.911Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "delegation_started",
+			"to": "it",
+			"task": "A new designer, Ana Petrovic (account username ana.petrovic), starts Monday and needs to be set up with the \"creative-workstation\" equipment profile: a MacBook Pro 16, Figma, Adobe Creative Cloud licenses, and an external 4K monitor. Please provide step-by-step setup guidance for this equipment: fir",
+			"ts": "2026-10-31T19:00:54.511Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "it",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "getServiceStatus",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:00:54.511Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "it",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "resetPassword",
+			"allowed": false,
+			"reason": "role employee is not permitted",
+			"ts": "2026-10-31T19:00:54.511Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "it",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "loadSkill",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:00:54.511Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"agent": "it",
+			"type": "skill_loaded",
+			"skill": "new-hire-device-setup",
+			"ts": "2026-10-31T19:00:55.930Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"agent": "it",
+			"type": "tool_call",
+			"tool": "loadSkill",
+			"outcome": "ok",
+			"durationMs": 0,
+			"ts": "2026-10-31T19:00:55.930Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"agent": "it",
+			"type": "tool_call",
+			"tool": "getServiceStatus",
+			"outcome": "ok",
+			"durationMs": 0,
+			"ts": "2026-10-31T19:00:57.664Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"agent": "it",
+			"type": "tool_call",
+			"tool": "getServiceStatus",
+			"outcome": "ok",
+			"durationMs": 0,
+			"ts": "2026-10-31T19:00:57.664Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "delegation_completed",
+			"to": "it",
+			"durationMs": 8279,
+			"outcome": "ok",
+			"ts": "2026-10-31T19:01:02.790Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "tool_call",
+			"tool": "delegateToIt",
+			"outcome": "ok",
+			"durationMs": 8279,
+			"ts": "2026-10-31T19:01:02.790Z",
+			"requestId": "2143b40a-6d68-46a6-bcb1-6f462065a931"
+		}
+	]
+}

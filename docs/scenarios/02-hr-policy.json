@@ -1,0 +1,84 @@
+{
+	"text": "You're entitled to **25 vacation days per year, plus 1 day for the patron saint day**.\n\nHR can't see your remaining balance from their tools, so check the HR portal or ask HR directly for that.",
+	"trace": [
+		{
+			"type": "permission_decision",
+			"agent": "orchestrator",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "delegateToIt",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T18:59:48.322Z",
+			"requestId": "873a4a50-587b-40cb-9c97-1bbe610dadc9"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "orchestrator",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "delegateToHr",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T18:59:48.322Z",
+			"requestId": "873a4a50-587b-40cb-9c97-1bbe610dadc9"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "delegation_started",
+			"to": "hr",
+			"task": "Look up the vacation entitlement for the current user, Ana Petrovic (account username ana.petrovic). Report how many vacation days she is entitled to, and her remaining balance if available.",
+			"ts": "2026-10-31T18:59:49.573Z",
+			"requestId": "873a4a50-587b-40cb-9c97-1bbe610dadc9"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "hr",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "searchHrPolicy",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T18:59:49.609Z",
+			"requestId": "873a4a50-587b-40cb-9c97-1bbe610dadc9"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "hr",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "getEquipmentProfile",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T18:59:49.609Z",
+			"requestId": "873a4a50-587b-40cb-9c97-1bbe610dadc9"
+		},
+		{
+			"agent": "hr",
+			"type": "tool_call",
+			"tool": "search_hr_policies",
+			"outcome": "ok",
+			"durationMs": 11,
+			"ts": "2026-10-31T18:59:50.706Z",
+			"requestId": "873a4a50-587b-40cb-9c97-1bbe610dadc9"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "delegation_completed",
+			"to": "hr",
+			"durationMs": 3039,
+			"outcome": "ok",
+			"ts": "2026-10-31T18:59:52.612Z",
+			"requestId": "873a4a50-587b-40cb-9c97-1bbe610dadc9"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "tool_call",
+			"tool": "delegateToHr",
+			"outcome": "ok",
+			"durationMs": 3040,
+			"ts": "2026-10-31T18:59:52.612Z",
+			"requestId": "873a4a50-587b-40cb-9c97-1bbe610dadc9"
+		}
+	]
+}

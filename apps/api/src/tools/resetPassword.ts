@@ -5,7 +5,7 @@ import { ACCOUNTS } from "../fixtures.js";
 export const resetPasswordTool: ToolDef<{ username: string }> = {
   name: "resetPassword",
   capability: "resetPassword",
-  description: "Resets the password of an employee account and sends a reset link (simulated). Restricted to IT administrators.",
+  description: "Resets the password of an employee account and sends a reset link (simulated).",
   inputSchema: z.object({
     username: z.string().regex(/^[a-z]+\.[a-z]+$/),
   }),

@@ -1,0 +1,84 @@
+{
+	"text": "I couldn't get your vacation entitlement. The HR policy service didn't respond, so I can't tell you how many days you get. Please try again later. If it still doesn't work, your manager or HR can confirm the number.",
+	"trace": [
+		{
+			"type": "permission_decision",
+			"agent": "orchestrator",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "delegateToIt",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:03:36.041Z",
+			"requestId": "d56f9893-1b26-4122-ab61-47be15523662"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "orchestrator",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "delegateToHr",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:03:36.041Z",
+			"requestId": "d56f9893-1b26-4122-ab61-47be15523662"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "delegation_started",
+			"to": "hr",
+			"task": "Ana Petrovic (account username ana.petrovic) asks: how many vacation days do I get? Please look up her vacation entitlement and report the number of days, plus any relevant details about how it is calculated if available.",
+			"ts": "2026-10-31T19:03:37.383Z",
+			"requestId": "d56f9893-1b26-4122-ab61-47be15523662"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "hr",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "searchHrPolicy",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:03:37.415Z",
+			"requestId": "d56f9893-1b26-4122-ab61-47be15523662"
+		},
+		{
+			"type": "permission_decision",
+			"agent": "hr",
+			"userId": "ana",
+			"role": "employee",
+			"capability": "getEquipmentProfile",
+			"allowed": true,
+			"reason": "permitted",
+			"ts": "2026-10-31T19:03:37.415Z",
+			"requestId": "d56f9893-1b26-4122-ab61-47be15523662"
+		},
+		{
+			"agent": "hr",
+			"type": "tool_call",
+			"tool": "search_hr_policies",
+			"outcome": "error",
+			"durationMs": 10002,
+			"ts": "2026-10-31T19:03:48.337Z",
+			"requestId": "d56f9893-1b26-4122-ab61-47be15523662"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "delegation_completed",
+			"to": "hr",
+			"durationMs": 12404,
+			"outcome": "error",
+			"ts": "2026-10-31T19:03:49.787Z",
+			"requestId": "d56f9893-1b26-4122-ab61-47be15523662"
+		},
+		{
+			"agent": "orchestrator",
+			"type": "tool_call",
+			"tool": "delegateToHr",
+			"outcome": "ok",
+			"durationMs": 12404,
+			"ts": "2026-10-31T19:03:49.788Z",
+			"requestId": "d56f9893-1b26-4122-ab61-47be15523662"
+		}
+	]
+}

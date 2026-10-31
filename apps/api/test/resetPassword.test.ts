@@ -33,4 +33,7 @@ describe('resetPassword tool', () => {
 		});
 		expect(parseResult.success).toBe(false);
 	});
+	it('does not mention roles or restrictions in the description (access is enforced in code)', () => {
+		expect(resetPasswordTool.description).not.toMatch(/admin|role|restrict/i);
+	});
 });

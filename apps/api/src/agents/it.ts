@@ -22,6 +22,8 @@ Rules:
 - Keep replies short and factual.
 - Earlier assistant messages marked "[Verified ...]" come from your own tool lookups. Do not question or correct them.
 - Answer only the current task and do not comment on earlier answers.
+- Access control is enforced by the system. If you have a tool, the requester is authorized to use it:
+  call it. Never ask about, check or assume the requester's role or administrator status.
 
 ${buildSkillCatalog()}`;
 
