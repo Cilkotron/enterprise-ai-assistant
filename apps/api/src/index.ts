@@ -3,8 +3,10 @@ import { z } from 'zod';
 import { getModel } from './llm.js';
 import { parseEnv, type Env } from './env.js';
 import { runItSpecialist } from './agents/it.js';
+import { runHrSpecialist } from './agents/hr.js';
 import { TraceCollector } from './trace.js';
 import { USERS } from './users.js';
+import { parseMcpConfig } from './mcp-tools.js';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -19,9 +21,9 @@ app.post('/api/debug/it', async (c) => {
 			task: z.string().min(1).max(500),
 		});
 		const body = await c.req.json();
-        const parsed = bodySchema.safeParse(await c.req.json().catch(() => null));
-        if (!parsed.success) return c.json({ error: "invalid_request" }, 400);
-        const user = USERS[parsed.data.userId];
+		const parsed = bodySchema.safeParse(await c.req.json().catch(() => null));
+		if (!parsed.success) return c.json({ error: 'invalid_request' }, 400);
+		const user = USERS[parsed.data.userId];
 		const model = getModel(env);
 		const trace = new TraceCollector(crypto.randomUUID());
 		const result = await runItSpecialist({
@@ -34,6 +36,41 @@ app.post('/api/debug/it', async (c) => {
 		return c.json({ result, trace: trace.getEvents() });
 	} catch (err) {
 		console.error(err);
+		return c.json({ error: 'internal_error' }, 502);
+	}
+});
+
+// TEMPORARY: debug route for the HR specialist. Will be removed.
+app.post('/api/debug/hr', async (c) => {
+	const parsed = z
+		.object({
+			userId: z.enum(['ana', 'marko']),
+			task: z.string().min(1).max(500),
+		})
+		.safeParse(await c.req.json().catch(() => null));
+	if (!parsed.success) return c.json({ error: 'invalid_request' }, 400);
+
+	try {
+		const env = parseEnv(c.env);
+		const mcp = parseMcpConfig(c.env);
+		const trace = new TraceCollector(crypto.randomUUID());
+		const result = await runHrSpecialist({
+			model: getModel(env),
+			user: USERS[parsed.data.userId],
+			trace,
+			task: parsed.data.task,
+			history: [],
+			mcp,
+		});
+		return c.json({
+			result: result.ok ? { ok: true, text: result.text } : result,
+			trace: trace.getEvents(),
+		});
+	} catch (err) {
+		console.error(
+			'debug/hr failed:',
+			err instanceof Error ? err.message : 'unknown error',
+		);
 		return c.json({ error: 'internal_error' }, 502);
 	}
 });

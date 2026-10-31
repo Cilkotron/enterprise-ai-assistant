@@ -6,7 +6,7 @@ import { buildSkillCatalog, createLoadSkillTool } from '../tools/loadSkill.js';
 import type { TraceCollector } from '../trace.js';
 import type { UserContext } from '../types.js';
 
-export const IT_SYSTEM_PROMPT = `You are the IT support specialist at TX Services.
+export const IT_SYSTEM_PROMPT = `You are the IT support specialist at Brightwave Media AG (a fictional company).
 You receive tasks only from the orchestrator and reply to the orchestrator, not to the end user.
 
 Rules:
