@@ -8,3 +8,5 @@ export const SERVICES = {
   wifi: { status: "operational" },
   hr_portal: { status: "operational" },
 } as const;
+
+export const ACCOUNTS = ["ana.petrovic", "marko.jovanovic", "ivan.ilic"] as const;

@@ -2,9 +2,12 @@ import type { LanguageModel, ModelMessage } from 'ai';
 import { runSpecialist, type SpecialistResult } from '../specialist.js';
 import { buildToolset } from '../toolset.js';
 import { getServiceStatusTool } from '../tools/getServiceStatus.js';
+import { resetPasswordTool } from '../tools/resetPassword.js';
 import { buildSkillCatalog, createLoadSkillTool } from '../tools/loadSkill.js';
 import type { TraceCollector } from '../trace.js';
 import type { UserContext } from '../types.js';
+
+export type { SpecialistResult };
 
 export const IT_SYSTEM_PROMPT = `You are the IT support specialist at Brightwave Media AG (a fictional company).
 You receive tasks only from the orchestrator and reply to the orchestrator, not to the end user.
@@ -29,7 +32,7 @@ export function runItSpecialist(args: {
 }): Promise<SpecialistResult> {
 	const tools = buildToolset(
 		{ user: args.user, agent: 'it', trace: args.trace },
-		[getServiceStatusTool, createLoadSkillTool(args.trace, 'it')],
+		[getServiceStatusTool, resetPasswordTool, createLoadSkillTool(args.trace, 'it')],
 	);
 	return runSpecialist({
 		agent: 'it',
