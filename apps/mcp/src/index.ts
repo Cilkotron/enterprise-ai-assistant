@@ -88,7 +88,6 @@ async function handleAdminMode(request: Request, env: Env): Promise<Response> {
 	if (!body.success)
 		return Response.json({ error: 'invalid_mode' }, { status: 400 });
 
-    console.log(body.data.mode);
 	await modeStore(env).setMode(body.data.mode);
 	return Response.json({ mode: body.data.mode });
 }

@@ -86,7 +86,10 @@ app.post('/api/chat', async (c) => {
 app.notFound((c) => c.json({ error: 'not_found' }, 404));
 
 app.onError((err, c) => {
-	console.error(err);
+	console.error(
+		'request failed:',
+		err instanceof Error ? err.message : 'unknown error',
+	);
 	return c.json({ error: 'internal_error' }, 500);
 });
 
