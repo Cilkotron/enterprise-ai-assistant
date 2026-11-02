@@ -2,8 +2,6 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import { getModel } from './llm.js';
 import { parseEnv, type Env } from './env.js';
-import { runItSpecialist } from './agents/it.js';
-import { runHrSpecialist } from './agents/hr.js';
 import { TraceCollector } from './trace.js';
 import { USERS } from './users.js';
 import { parseMcpConfig } from './mcp-tools.js';
@@ -12,11 +10,13 @@ import {
 	createSessionState,
 	InMemorySessionStore,
 } from './orchestrator/session.js';
+import { createRateLimiter } from './rate-limit.js';
+
+const allowChat = createRateLimiter(30, 60 * 60 * 1000); // 30 requests per hour per IP
 
 const app = new Hono<{ Bindings: Env }>();
 
 app.get('/api/health', (c) => c.json({ status: 'ok' }));
-
 
 // Not durable across Worker isolates; to be replaced by a Durable Object store.
 const sessions = new InMemorySessionStore();
@@ -36,6 +36,12 @@ app.get('/api/users', (c) =>
 		})),
 	),
 );
+
+app.use('/api/chat', async (c, next) => {
+	const ip = c.req.header('cf-connecting-ip') ?? 'unknown';
+	if (!allowChat(ip)) return c.json({ error: 'rate_limited' }, 429);
+	await next();
+});
 
 app.post('/api/chat', async (c) => {
 	// Identity comes only from this header (demo switcher), never from the body or the model.

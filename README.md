@@ -2,7 +2,7 @@
  
 First-level IT and HR assistant with three agents: an **orchestrator** (the only agent the user talks to) and two specialists (**IT** and **HR**) that report back only to the orchestrator. All company data is fictional (Brightwave Media AG) and all systems are simulated.
  
-**Deployed demo (optional):** [FILL IN: URL, or delete this line]
+**Deployed demo:** [brightwave-assistant.psiho747.workers.dev](https://brightwave-assistant.psiho747.workers.dev)
  
 ## Setup
  
@@ -109,6 +109,7 @@ Full traces are in `docs/scenarios/`. Response wording varies, so judge the trac
 - Honesty about failures relies on prompts plus the fact that tools return neutral errors. Permissions, however, are enforced in code and do not depend on the model.
 - `delegation_completed` reports whether the specialist produced an answer; tool failures appear as separate `tool_call` events.
 - The user switcher is a demo mechanism, and all data is mock data.
+- Worker-to-Worker calls over workers.dev need the global_fetch_strictly_public compatibility flag (error 1042); a service binding would be the alternative.
 
 ## Next priorities 
 

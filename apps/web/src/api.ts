@@ -38,6 +38,8 @@ function errorMessage(status: number): string {
 			return 'The assistant took too long to answer. Please try again.';
 		case 502:
 			return 'The assistant could not complete this request. Please try again.';
+		case 429:
+			return 'Too many requests. Please wait a while and try again.';
 		default:
 			return 'Something went wrong on the server. Please try again.';
 	}

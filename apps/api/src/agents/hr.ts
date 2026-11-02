@@ -39,14 +39,14 @@ export async function runHrSpecialist(args: {
 				type: 'http',
 				url: args.mcp.MCP_URL,
 				headers: { Authorization: `Bearer ${args.mcp.MCP_AUTH_TOKEN}` },
-                redirect: "follow",
+				redirect: 'follow',
 			},
 		});
 		// Discovery: the agent learns its tools from the server, then permissions filter them.
 		const discovered = await withTimeout(client.tools(), DISCOVERY_TIMEOUT_MS);
 		const tools = buildMcpToolset(
 			{ user: args.user, agent: 'hr', trace: args.trace },
-			discovered as ToolSet
+			discovered as ToolSet,
 		);
 
 		return await runSpecialist({
